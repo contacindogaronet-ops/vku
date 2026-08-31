@@ -24,22 +24,6 @@ jobs:
         submodules: 'recursive'
         fetch-depth: '0'
 
-    - name: Build APK
-      env:
-        KEY_ALIAS: ${{ secrets.APP_KEYSTORE_ALIAS }}
-        KEY_PASS: ${{ secrets.APP_KEY_PASSWORD }}
-        STORE_PASS: ${{ secrets.APP_KEYSTORE_PASSWORD }}
-        KEYSTORE_PATH: ${{ steps.android_keystore.outputs.filePath }}
-      run: |
-          cd ${{ github.workspace }}/V2rayNG
-          gradle wrapper
-          chmod +x gradlew
-          ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file="$KEYSTORE_PATH" \
-            -Pandroid.injected.signing.store.password="$STORE_PASS" \
-            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
-            -Pandroid.injected.signing.key.password="$KEY_PASS"
-
     - name: Setup Android SDK
       uses: android-actions/setup-android@v4
       with:
@@ -116,13 +100,21 @@ jobs:
         encodedString: ${{ secrets.APP_KEYSTORE_BASE64 }}
 
     - name: Build APK
+      env:
+        KEY_ALIAS: ${{ secrets.APP_KEYSTORE_ALIAS }}
+        KEY_PASS: ${{ secrets.APP_KEY_PASSWORD }}
+        STORE_PASS: ${{ secrets.APP_KEYSTORE_PASSWORD }}
+        KEYSTORE_PATH: ${{ steps.android_keystore.outputs.filePath }}
       run: |
-        cd ${{ github.workspace }}/V2rayNG
-        echo "sdk.dir=${ANDROID_HOME}" > local.properties
-        chmod 755 gradlew
-        ./gradlew licenseFdroidReleaseReport
-        ./gradlew assembleRelease -Pandroid.injected.signing.store.file=${{ steps.android_keystore.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.APP_KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.APP_KEYSTORE_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.APP_KEY_PASSWORD }}
-    
+       cd ${{ github.workspace }}/V2rayNG
+       gradle wrapper
+       chmod +x gradlew
+       ./gradlew assembleRelease \
+         -Pandroid.injected.signing.store.file="$KEYSTORE_PATH" \
+         -Pandroid.injected.signing.store.password="$STORE_PASS" \
+         -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+         -Pandroid.injected.signing.key.password="$KEY_PASS"
+
     - name: Upload arm64-v8a APK
       uses: actions/upload-artifact@v7
       if: ${{  success() }}
