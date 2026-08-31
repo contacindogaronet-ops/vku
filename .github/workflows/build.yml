@@ -50,24 +50,15 @@ jobs:
             
     - name: Resolve Nested Dependencies
       run: |
-          echo "Memaksa sinkronisasi seluruh pohon submodule..."
-          git submodule update --init --recursive
-          git submodule status --recursive
-          
-
-    - name: Resolve Nested Dependencies
-       run: |
-          echo "Memaksa sinkronisasi seluruh pohon submodule..."
-          git submodule update --init --recursive
-          git submodule status --recursive
-
-
+         echo "Memaksa sinkronisasi seluruh pohon submodule..."
+         git submodule update --init --recursive
+         git submodule status --recursive
 
     - name: Build libhevtun
       if: steps.cache-libhevtun-restore.outputs.cache-hit != 'true'
       run: |
         bash compile-hevtun.sh
-    
+
     - name: Save libhevtun
       if: steps.cache-libhevtun-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v6
