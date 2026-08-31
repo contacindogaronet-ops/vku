@@ -100,20 +100,12 @@ jobs:
         encodedString: ${{ secrets.APP_KEYSTORE_BASE64 }}
 
     - name: Build APK
-      env:
-        KEY_ALIAS: ${{ secrets.APP_KEYSTORE_ALIAS }}
-        KEY_PASS: ${{ secrets.APP_KEY_PASSWORD }}
-        STORE_PASS: ${{ secrets.APP_KEYSTORE_PASSWORD }}
-        KEYSTORE_PATH: ${{ steps.android_keystore.outputs.filePath }}
       run: |
-       cd ${{ github.workspace }}/V2rayNG
-       gradle wrapper
-       chmod +x gradlew
-       ./gradlew assembleRelease \
-         -Pandroid.injected.signing.store.file="$KEYSTORE_PATH" \
-         -Pandroid.injected.signing.store.password="$STORE_PASS" \
-         -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
-         -Pandroid.injected.signing.key.password="$KEY_PASS"
+        cd ${{ github.workspace }}/V2rayNG
+        gradle wrapper
+        chmod +x gradlew
+        # Ganti assembleRelease menjadi assembleDebug, hapus semua parameter -P
+        ./gradlew assembleDebug
 
     - name: Upload arm64-v8a APK
       uses: actions/upload-artifact@v7
