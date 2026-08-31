@@ -1,9 +1,4 @@
 name: Build APK
- env:
-          KEY_ALIAS: ${{ secrets.APP_KEYSTORE_ALIAS }}
-          KEY_PASS: ${{ secrets.APP_KEY_PASSWORD }}
-          STORE_PASS: ${{ secrets.APP_KEYSTORE_PASSWORD }}
-          KEYSTORE_PATH: ${{ steps.android_keystore.outputs.filePath }}
 
 on:
   workflow_dispatch:
@@ -28,6 +23,13 @@ jobs:
       with:
         submodules: 'recursive'
         fetch-depth: '0'
+
+    - name: Build APK
+      env:
+        KEY_ALIAS: ${{ secrets.APP_KEYSTORE_ALIAS }}
+        KEY_PASS: ${{ secrets.APP_KEY_PASSWORD }}
+        STORE_PASS: ${{ secrets.APP_KEYSTORE_PASSWORD }}
+        KEYSTORE_PATH: ${{ steps.android_keystore.outputs.filePath }}
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v4
