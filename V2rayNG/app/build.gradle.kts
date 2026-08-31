@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.v2ray.ang"
+    namespace = "com.indogaro.net"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.v2ray.ang"
+        applicationId = "com.indogaro.net"
         minSdk = 24
         targetSdk = 37
         versionCode = 746
