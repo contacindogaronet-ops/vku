@@ -24,6 +24,7 @@ jobs:
         submodules: 'recursive'
         fetch-depth: '0'
 
+    
     - name: Build APK
       env:
         KEY_ALIAS: ${{ secrets.APP_KEYSTORE_ALIAS }}
