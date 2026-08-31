@@ -1,4 +1,9 @@
 name: Build APK
+ env:
+          KEY_ALIAS: ${{ secrets.APP_KEYSTORE_ALIAS }}
+          KEY_PASS: ${{ secrets.APP_KEY_PASSWORD }}
+          STORE_PASS: ${{ secrets.APP_KEYSTORE_PASSWORD }}
+          KEYSTORE_PATH: ${{ steps.android_keystore.outputs.filePath }}
 
 on:
   workflow_dispatch:
